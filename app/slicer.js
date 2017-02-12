@@ -1,4 +1,4 @@
-let layers, pizzaDone, toBeDone, solution, width, height;
+let layers, pizzaDone, toBeDone, solution, width, height, allPizza, allPos;
 
 /**
  * @param {boolean[][]} data - Pizza! It is used here only to get it's dimensions.
@@ -14,8 +14,23 @@ module.exports.findPerfectSlices = function (data, lrs, r = 0, c = 0) {
     height = data.length;
     width = data[0].length;
     toBeDone = width * height;
-    recurse(r, c);
-    process.stdout.write(`\r${ Math.round(pizzaDone / toBeDone * 100000) / 100 }%\n`);
+    allPos = 0;
+    allPizza = [];
+    for (let r = 0; r < lrs.length; ++r) {
+        for (let c = 0; c < lrs[r].length; ++c) {
+            allPizza.push([lrs[r][c].length, r, c]);
+        }
+    }
+    allPizza = allPizza.sort((a, b) => a[0] > b[0] ? 1 : a[0] === b[0] ? 0 : -1);
+    for (let cell of allPizza) {
+        allPos++;
+        if (allPos % 10)
+            process.stdout.write(`\r${ Math.round(allPos / allPizza.length * 10000) / 100 }%`);
+        if (countVariants(cell[1], cell[2]) === 0)
+            continue;
+        recurse(cell[1], cell[2]);
+    }
+    process.stdout.write(`\r100%\n`);
     return solution;
 };
 
@@ -42,28 +57,28 @@ function recurse (row, col) {
     ++pizzaDone;
     // console.log(`Slice (${slice[1]}, ${slice[2]}, ${slice[3]}, ${slice[4]}) marked as cut.`);
     solution.push([slice[1], slice[2], slice[1] + slice[4] - 1, slice[2] + slice[3] - 1]);
-    if (pizzaDone % 10)
-        process.stdout.write(`\r${ Math.round(pizzaDone / toBeDone * 100000) / 100 }%`);
-    for (j = 0; j < slice[3] + 2; j++) {
-        if ((vvv = countVariants(slice[1] - 1, slice[2] - 1 + j)) > 0) {
-            // console.log(`Variants at (${slice[1] - 1}, ${slice[2] - 1 + j}): ${vvv}`);
-            recurse(slice[1] - 1, slice[2] - 1 + j);
-        }
-        if ((vvv = countVariants(slice[1] + slice[4], slice[2] - 1 + j)) > 0) {
-            // console.log(`Variants at (${slice[1] + slice[4]}, ${slice[2] - 1 + j}): ${vvv}`);
-            recurse(slice[1] + slice[4], slice[2] - 1 + j);
-        }
-    }
-    for (j = 0; j < slice[4] + 2; j++) {
-        if ((vvv = countVariants(slice[1] - 1 + j, slice[2] - 1)) > 0) {
-            // console.log(`Variants at (${slice[1] - 1 + j}, ${slice[2] - 1}): ${vvv}`);
-            recurse(slice[1] - 1 + j, slice[2] - 1);
-        }
-        if ((vvv = countVariants(slice[1] - 1 + j, slice[2] + slice[3])) > 0) {
-            // console.log(`Variants at (${slice[1] - 1 + j}, ${slice[2] + slice[3]}): ${vvv}`);
-            recurse(slice[1] - 1 + j, slice[2] + slice[3]);
-        }
-    }
+    // if (pizzaDone % 10)
+    //     process.stdout.write(`\r${ Math.round(pizzaDone / toBeDone * 100000) / 100 }%`);
+    // for (j = 0; j < slice[3] + 2; j++) {
+    //     if ((vvv = countVariants(slice[1] - 1, slice[2] - 1 + j)) > 0) {
+    //         // console.log(`Variants at (${slice[1] - 1}, ${slice[2] - 1 + j}): ${vvv}`);
+    //         recurse(slice[1] - 1, slice[2] - 1 + j);
+    //     }
+    //     if ((vvv = countVariants(slice[1] + slice[4], slice[2] - 1 + j)) > 0) {
+    //         // console.log(`Variants at (${slice[1] + slice[4]}, ${slice[2] - 1 + j}): ${vvv}`);
+    //         recurse(slice[1] + slice[4], slice[2] - 1 + j);
+    //     }
+    // }
+    // for (j = 0; j < slice[4] + 2; j++) {
+    //     if ((vvv = countVariants(slice[1] - 1 + j, slice[2] - 1)) > 0) {
+    //         // console.log(`Variants at (${slice[1] - 1 + j}, ${slice[2] - 1}): ${vvv}`);
+    //         recurse(slice[1] - 1 + j, slice[2] - 1);
+    //     }
+    //     if ((vvv = countVariants(slice[1] - 1 + j, slice[2] + slice[3])) > 0) {
+    //         // console.log(`Variants at (${slice[1] - 1 + j}, ${slice[2] + slice[3]}): ${vvv}`);
+    //         recurse(slice[1] - 1 + j, slice[2] + slice[3]);
+    //     }
+    // }
 }
 
 /**
