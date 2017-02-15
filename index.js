@@ -67,12 +67,14 @@ let solution = Solution.findPerfectSlices(
 );
 
 console.log(`Solution found in ${ -time + (time = Date.now()) }ms`);
-console.log(`\x1b[32mSolution score: ${
-    solution.map(s => (Math.abs(s[2] - s[0]) + 1) * (Math.abs(s[3] - s[1]) + 1))
-        .reduce((a, b) => a + b)
-}/${ layers.length * layers[0].length }\x1b[0m`);
+let score = solution.map(s => (Math.abs(s[2] - s[0]) + 1) * (Math.abs(s[3] - s[1]) + 1))
+        .reduce((a, b) => a + b),
+    total = layers.length * layers[0].length;
+console.log(`\x1b[32mSolution score: ${ score }/${ total }\x1b[0m`);
 
+if (!fs.existsSync(`./output`))
+    fs.mkdirSync(`./output`);
 fs.writeFileSync(
-    `./${ OUTPUT_FILE }.out`,
+    `./output/${ OUTPUT_FILE.replace(/\..*$/, "") }(${ score }-of-${ total }).out`,
     solution.length + `\n` + solution.map(s => s.join(` `)).join(`\n`)
 );
