@@ -124,21 +124,21 @@ function getWeight (slice) {
         curr = 0, // current weight
         j;
     for (j = 0; j < slice[3] + 2; j++) {
-        curr += countVariants(slice[1] - 1, slice[2] - 1 + j);
-        curr += countVariants(slice[1] + slice[4], slice[2] - 1 + j);
+        curr += countVariants(slice[1] - 1, slice[2] - 1 + j) || -1000;
+        curr += countVariants(slice[1] + slice[4], slice[2] - 1 + j) || -1000;
     }
     for (j = 0; j < slice[4] + 2; j++) {
-        curr += countVariants(slice[1] - 1 + j, slice[2] - 1);
-        curr += countVariants(slice[1] - 1 + j, slice[2] + slice[3]);
+        curr += countVariants(slice[1] - 1 + j, slice[2] - 1) || -1000;
+        curr += countVariants(slice[1] - 1 + j, slice[2] + slice[3]) || -1000;
     }
     let restore = cutSlice(slice);
     for (j = 0; j < slice[3] + 2; j++) {
-        w += countVariants(slice[1] - 1, slice[2] - 1 + j);
-        w += countVariants(slice[1] + slice[4], slice[2] - 1 + j);
+        w += countVariants(slice[1] - 1, slice[2] - 1 + j) || -1000;
+        w += countVariants(slice[1] + slice[4], slice[2] - 1 + j) || -1000;
     }
     for (j = 0; j < slice[4] + 2; j++) {
-        w += countVariants(slice[1] - 1 + j, slice[2] - 1);
-        w += countVariants(slice[1] - 1 + j, slice[2] + slice[3]);
+        w += countVariants(slice[1] - 1 + j, slice[2] - 1) || -1000;
+        w += countVariants(slice[1] - 1 + j, slice[2] + slice[3]) || -1000;
     }
     for (let slice of restore) slice[0] = true; // restore slices
     return (curr - w) /*/ Math.sqrt(slice[3] * slice[4])*/; // adjust weight of a piece
