@@ -5,6 +5,7 @@ This is the solution for [Google Hash Code 2017](https://hashcode.withgoogle.com
 ### Algorithm
 
 The algorithm to solve this task is following:
+
 1. Find all possible variants for each cell of the pizza. This will form 3-dimensional array `[x][y][variant]` with each value of available slice to cut `[x, y, width, height]`.
 2. Starting from the random cell in pizza (preferably picked up from ones which have the minimum variants available), find the slice of all available slices for this cell which has the minimum [weight](https://github.com/ZitRos/google-hash-code-2017-task/blob/da8916d289f832d084b27805885adad85b532a4f/app/slicer.js#L122). In short, the weight function calculates the number, which reflects the importance of the slice we are going to cut out. The most important slices are those ones which leave less available variants around the slice than others after being cut. The more slice is important, the bigger weight it has.
 3. Once the slice is cut, remove all its variants from variants array (this will also remove some of the variants from adjacent cells).
