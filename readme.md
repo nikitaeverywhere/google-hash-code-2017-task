@@ -2,6 +2,15 @@
 
 This is the solution for [Google Hash Code 2017](https://hashcode.withgoogle.com) practice task. The PDF with problem statement: [/pizza.pdf](https://github.com/ZitRos/google-hash-code-2017-task/blob/master/pizza.pdf).
 
+Average results of this solution:
+
++ 871136/1000000 on big data set
++ 47997/50000 on medium data set
++ 41/42 on small data set
+
+Total average score is **919174**. The algorithm has randomization factor, so
+running it multiple times may yield **even better** results.
+
 ### Algorithm
 
 The algorithm to solve this task is following:
